@@ -3,22 +3,22 @@
         <h3 class="title">Укажите ваше ФИО</h3>
         <div class="form__wrap form-wrap--flex">
             <div class="form-wrap-name form-wrap__name flex">
-                <input class="form-input" name="last-name" id="" placeholder="Фамилия*" v-model.trim="last_name" @input="getDocumentDate($event.target)" :class="{ 'invalid': $v.last_name.$error }">
+                <input class="form-input" name="last-name" id="" placeholder="Фамилия*" v-model.trim="last_name" @input="validator($event.target)" :class="{ 'invalid': $v.last_name.$error }">
                 <small class="invalid-text invalid-text--bottom" v-if="$v.last_name.$error">Введите фамилию</small>
             </div>
             <div class="form-wrap-name form-wrap__name flex">
-                <input class="form-input" name="first-name" placeholder="Имя*" v-model.trim="first_name" @input="getDocumentDate($event.target)" :class="{ 'invalid': $v.first_name.$error }">
+                <input class="form-input" name="first-name" placeholder="Имя*" v-model.trim="first_name" @input="validator($event.target)" :class="{ 'invalid': $v.first_name.$error }">
                 <small class="invalid-text invalid-text--bottom" v-if="$v.first_name.$error">Введите имя</small>
             </div>
             <input class="form-wrap__input form-input" name="middle-name" placeholder="Отчество" v-model.trim="$v.middle_name">
         </div>
         <div class="form__wrap form-wrap--flex">
             <label class="form-wrap__label form-wrap-label label">Дата рождения*
-                <input class="form-input" name="birth-date" type="date" v-model="birth_date" @input="getDocumentDate($event.target)" :class="{ 'invalid': $v.birth_date.$error }">
+                <input class="form-input" name="birth-date" type="date" v-model="birth_date" @input="validator($event.target)" :class="{ 'invalid': $v.birth_date.$error }">
                 <small class="invalid-text" v-if="$v.birth_date.$error">Укажите дату</small>
             </label>
             <label class="form-wrap__label form-wrap-label label">Номер телефона*
-                <input class="form-input" name="tel" type="tel" placeholder="79917762642" v-model.trim="tel" @input="getDocumentDate($event.target)" :class="{ 'invalid': $v.tel.$error }">
+                <input class="form-input" name="tel" type="tel" placeholder="79917762642" v-model.trim="tel" @input="validator($event.target)" :class="{ 'invalid': $v.tel.$error }">
                 <small class="invalid-text" v-if="$v.tel.$error && !$v.tel.required">Введите номер телефона</small>
                 <small class="invalid-text" v-else-if="$v.tel.$error && !$v.tel.checkFirstLetter">Введите с цифры 7</small>
                 <small class="invalid-text" v-else-if="$v.tel.$error && (!$v.tel.maxLength || !$v.tel.telPatern)">Некорректный номер телефона</small>
@@ -56,7 +56,7 @@
                 <input class="form-input form-wrap-address__input form-input--no-margin" name="country" placeholder="Страна">
                 <input class="form-input form-wrap-address__input form-input--no-margin" name="region" placeholder="Область">
                 <div class="form-wrap-address__city flex">
-                    <input class="form-input form-input--no-margin" name="city" placeholder="Город*" v-model="city" @input="getDocumentDate($event.target)" :class="{ 'invalid': $v.city.$error }">
+                    <input class="form-input form-input--no-margin" name="city" placeholder="Город*" v-model="city" @input="validator($event.target)" :class="{ 'invalid': $v.city.$error }">
                     <small class="invalid-text invalid-text--bottom" v-if="$v.city.$error && !$v.city.cityPatern">Введите город</small>
                 </div>
                 <input class="form-input form-wrap-address__input form-input--no-margin" name="street" placeholder="Улица">
@@ -66,12 +66,12 @@
         <div class="form__wrap">
             <div class="form-wrap-row flex">
                 <label class="form-wrap__label label">Тип документа*
-                    <select name="document-type" class="form-input" @change="getDocumentDate($event.target)">
+                    <select name="document-type" class="form-input" @change="validator($event.target)">
                         <option v-for="option in options.option3" :value="option" :key="option">{{ option }}</option>
                     </select>
                 </label>
                 <label class="form-wrap__label label">Дата выдачи*
-                    <input class="form-input" type="date" name="document-date" v-model="document_date" @input="getDocumentDate($event.target)" :class="{ 'invalid': $v.document_date.$error }">
+                    <input class="form-input" type="date" name="document-date" v-model="document_date" @input="validator($event.target)" :class="{ 'invalid': $v.document_date.$error }">
                     <small class="invalid-text" v-if="$v.document_date.$error">Укажите дату</small>
                 </label>
             </div>
@@ -136,7 +136,7 @@ export default {
                 alert('Новый клиент успешно создан!')
             }
         },
-        getDocumentDate(target) {
+        validator(target) {
             switch(target.name) {
                 case "document-date": 
                     this.document_date = target.value
