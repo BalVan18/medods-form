@@ -21,7 +21,8 @@
                 <input class="form-input" name="tel" type="tel" placeholder="79917762642" v-model.trim="tel" @input="validator($event.target)" :class="{ 'invalid': $v.tel.$error }">
                 <small class="invalid-text" v-if="$v.tel.$error && !$v.tel.required">Введите номер телефона</small>
                 <small class="invalid-text" v-else-if="$v.tel.$error && !$v.tel.checkFirstLetter">Введите с цифры 7</small>
-                <small class="invalid-text" v-else-if="$v.tel.$error && (!$v.tel.maxLength || !$v.tel.telPatern)">Некорректный номер телефона</small>
+                <small class="invalid-text" v-else-if="$v.tel.$error && (!$v.tel.minLength || !$v.tel.telPatern)">Номер телефона должен содержать {{ $v.tel.$params.minLength.min }} цифр</small>
+                <small class="invalid-text" v-else-if="$v.tel.$error && (!$v.tel.maxLength || !$v.tel.telPatern)">Некорректный формат телефона</small>
             </label>
             <div class="form-wrap__gender form-wrap-gender flex">
                 <h3 class="form-wrap-gender__label label">Укажите ваш пол</h3>
@@ -89,7 +90,7 @@
 </template>
 
 <script>
-import { required, maxLength} from 'vuelidate/lib/validators'
+import { required, minLength,maxLength} from 'vuelidate/lib/validators'
 
 const letterPatern = (/^[а-яА-ЯёЁa-zA-Z]+$/);
 
@@ -118,6 +119,7 @@ export default {
         birth_date: { required },
         tel: { 
             required,
+            minLength: minLength(11),
             maxLength: maxLength(11),
             checkFirstLetter: (value) => value[0] === '7',
             telPatern: (value) => (/^[0-9]+$/).test(value),
